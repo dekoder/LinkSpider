@@ -11,7 +11,6 @@
 BOT_NAME = 'LinkSpider'
 
 SPIDER_MIDDLEWARES = {
-    #'LinkSpider.middleware.urllog.UrlLogMiddleware': 643,
     'LinkSpider.middleware.filterfakestatic.FilterFakeStaticMiddleware': 400,
 }
 
