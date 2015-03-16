@@ -23,8 +23,12 @@ class FilterFakeStaticMiddleware(object):
 
             url = r.url
             if not self.pathSet.dismatch(url):
+                log.msg(format="Filtered pathset repeat %(request)s",
+                        level=log.DEBUG, spider=spider, request=r)
                 return False
             if not self.manager.addUrl(url):
+                log.msg(format="Filtered url repeat %(request)s",
+                        level=log.DEBUG, spider=spider, request=r)
                 return False
 
             return True

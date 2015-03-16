@@ -1,26 +1,31 @@
 from scrapy.http import Request
-from scrapy import log
 
+from LinkSpider.tools.HashCount import hashCount
 
 class FilterByDomTree(object):
 
     def __init__(self):
         self.treehash = {}
 
-    def process_spider_output(self, response, result, spider):
+    def getHash(self, data):
+        return HashCount(data)
 
-        def _filter(r):
-            if not isinstance(r, Request):
-                return True
+    def process_response(self, request, response, spider):
+        data = response.body
 
-            url = r.url
-            if not self.pathSet.dismatch(url):
-                return False
-            if not self.manager.addUrl(url):
-                return False
+        if -1 == data.find("<html") == data.find("<meta") == data.find("<body"):
+            return response
 
-            return True
-
-        return (r for r in result or () if _filter(r))
-
+        h = self.getHash(data)
+        if self.treehash.has_key(h):
+            if self.treehash[h] >= 5:
+                log.msg(format="Filtered dom tree repeat %(request)s",
+                        level=log.DEBUG, spider=spider, request=r)
+                return None
+            else:
+                self.treehash[h] += 1
+                return response
+        else:
+            self.treehash[h] = 1
+            return response
 

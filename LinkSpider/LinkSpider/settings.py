@@ -10,6 +10,10 @@
 
 BOT_NAME = 'LinkSpider'
 
+DOWNLOAD_MIDDLEWARES = {
+    'LinkSpider.middleware.filterbydomtree.FilterByDomTree': 50,
+}
+
 SPIDER_MIDDLEWARES = {
     'LinkSpider.middleware.filterfakestatic.FilterFakeStaticMiddleware': 400,
 }
