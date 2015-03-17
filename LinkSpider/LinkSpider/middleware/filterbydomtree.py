@@ -1,14 +1,15 @@
-from scrapy.http import Request
+from scrapy.http import Request, Response
+from scrapy import log
 
 from LinkSpider.tools.HashCount import hashCount
 
-class FilterByDomTree(object):
+class FilterByDomTreeMiddleware(object):
 
     def __init__(self):
         self.treehash = {}
 
     def getHash(self, data):
-        return HashCount(data)
+        return hashCount(data)
 
     def process_response(self, request, response, spider):
         data = response.body
@@ -20,8 +21,8 @@ class FilterByDomTree(object):
         if self.treehash.has_key(h):
             if self.treehash[h] >= 5:
                 log.msg(format="Filtered dom tree repeat %(request)s",
-                        level=log.DEBUG, spider=spider, request=r)
-                return None
+                        level=log.DEBUG, spider=spider, request=request)
+                return Response("")
             else:
                 self.treehash[h] += 1
                 return response

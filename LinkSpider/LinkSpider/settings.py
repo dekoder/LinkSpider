@@ -10,8 +10,8 @@
 
 BOT_NAME = 'LinkSpider'
 
-DOWNLOAD_MIDDLEWARES = {
-    'LinkSpider.middleware.filterbydomtree.FilterByDomTree': 50,
+DOWNLOADER_MIDDLEWARES = {
+    'LinkSpider.middleware.filterbydomtree.FilterByDomTreeMiddleware': 50,
 }
 
 SPIDER_MIDDLEWARES = {
